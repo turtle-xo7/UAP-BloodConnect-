@@ -1,0 +1,30 @@
+body {
+  font-family: "Segoe UI", Roboto, sans-serif;
+  background: #fdfdfd;
+}
+
+.hero {
+  background: linear-gradient(135deg, #b22222, #8b0000);
+  color: white;
+  padding: 80px 20px;
+  margin-bottom: 30px;
+  border-radius: 8px;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+.card {
+  border-radius: 15px;
+  transition: transform 0.2s ease-in-out;
+}
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.btn-danger {
+  border-radius: 25px;
+  font-weight: bold;
+}
