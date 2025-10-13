@@ -1,0 +1,27 @@
+<h1>Donor List</h1>
+<a href="{% url 'donor_create' %}">Add New Donor</a>
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Name</th>
+        <th>Department</th>
+        <th>Email</th>
+        <th>Blood Group</th>
+        <th>Available</th>
+        <th>Actions</th>
+    </tr>
+    {% for donor in donors %}
+    <tr>
+        <td>{{ donor.name }}</td>
+        <td>{{ donor.department }}</td>
+        <td>{{ donor.email }}</td>
+        <td>{{ donor.blood_group }}</td>
+        <td>{{ donor.is_available }}</td>
+        <td>
+            <a href="{% url 'donor_update' donor.pk %}">Edit</a> |
+            <a href="{% url 'donor_delete' donor.pk %}">Delete</a>
+        </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="6">No donors yet.</td></tr>
+    {% endfor %}
+</table>

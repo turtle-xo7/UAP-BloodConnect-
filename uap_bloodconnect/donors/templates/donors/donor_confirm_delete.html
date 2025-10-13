@@ -1,0 +1,7 @@
+<h1>Delete Donor</h1>
+<p>Are you sure you want to delete <b>{{ donor.name }}</b>?</p>
+<form method="POST">
+    {% csrf_token %}
+    <button type="submit">Confirm</button>
+</form>
+<a href="{% url 'donor_list' %}">Cancel</a>

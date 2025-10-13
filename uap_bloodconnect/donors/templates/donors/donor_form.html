@@ -1,0 +1,7 @@
+<h1>{{ form.instance.pk|yesno:"Edit Donor,Add New Donor" }}</h1>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save</button>
+</form>
+<a href="{% url 'donor_list' %}">Back to Donor List</a>
