@@ -1,0 +1,12 @@
+{% extends "core/base.html" %}
+{% block content %}
+<h2>Request — {{ request_obj.requester_name }}</h2>
+<p><strong>Blood Group:</strong> {{ request_obj.blood_group }}</p>
+<p><strong>Units:</strong> {{ request_obj.units_required }}</p>
+<p><strong>Needed at:</strong> {{ request_obj.date_needed }}</p>
+<p><strong>Urgency:</strong> {{ request_obj.urgency }}</p>
+{% if request_obj.proof_image %}
+  <img src="{{ request_obj.proof_image.url }}" style="max-width:400px" />
+{% endif %}
+<a class="btn btn-secondary" href="{% url 'request_list' %}">Back</a>
+{% endblock %}
