@@ -1,0 +1,10 @@
+{% extends "core/base.html" %}
+{% block content %}
+<h3>{{ form.instance.pk|yesno:"Edit Request,Create Request" }}</h3>
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button class="btn btn-primary" type="submit">Save</button>
+  <a class="btn btn-secondary" href="{% url 'request_list' %}">Cancel</a>
+</form>
+{% endblock %}

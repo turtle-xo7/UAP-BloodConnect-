@@ -1,0 +1,10 @@
+{% extends "core/base.html" %}
+{% block content %}
+<h3>Delete Request</h3>
+<p>Are you sure you want to delete the request for <b>{{ request_obj.requester_name }}</b>?</p>
+<form method="post">
+  {% csrf_token %}
+  <button class="btn btn-danger" type="submit">Confirm</button>
+  <a class="btn btn-secondary" href="{% url 'request_list' %}">Cancel</a>
+</form>
+{% endblock %}

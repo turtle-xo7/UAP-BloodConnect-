@@ -1,0 +1,37 @@
+{% extends "core/base.html" %}
+{% block content %}
+<h1>Blood Requests</h1>
+
+<form method="get" class="mb-3">
+  <input name="bg" placeholder="Blood group (e.g. A+)" value="{{ request.GET.bg }}">
+  <select name="urgency">
+    <option value="">All</option>
+    <option value="High">High</option>
+    <option value="Normal">Normal</option>
+  </select>
+  <button class="btn btn-sm btn-primary">Filter</button>
+  <a class="btn btn-sm btn-success" href="{% url 'request_create' %}">Create Request</a>
+</form>
+
+<table class="table table-striped">
+  <thead><tr><th>Patient</th><th>Blood Group</th><th>Units</th><th>Date Needed</th><th>Urgency</th><th>Actions</th></tr></thead>
+  <tbody>
+    {% for r in requests %}
+      <tr>
+        <td>{{ r.requester_name }}</td>
+        <td>{{ r.blood_group }}</td>
+        <td>{{ r.units_required }}</td>
+        <td>{{ r.date_needed }}</td>
+        <td>{{ r.urgency }}</td>
+        <td>
+          <a class="btn btn-sm btn-info" href="{% url 'request_detail' r.pk %}">View</a>
+          <a class="btn btn-sm btn-warning" href="{% url 'request_edit' r.pk %}">Edit</a>
+          <a class="btn btn-sm btn-danger" href="{% url 'request_delete' r.pk %}">Delete</a>
+        </td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="6">No requests found.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
