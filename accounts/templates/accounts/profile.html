@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+{% block title %}My Profile - UAP-BloodConnect{% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div class="lg:col-span-1">
+        <div class="card">
+            <div style="text-align: center; margin-bottom: 1.5rem;">
+                {% if profile.profile_picture %}
+                    <img src="{{ profile.profile_picture.url }}" alt="Profile Picture" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 4px solid var(--primary-red);">
+                {% else %}
+                    <div style="width: 120px; height: 120px; border-radius: 50%; background: var(--gray-200); display: flex; align-items: center; justify-content: center; margin: 0 auto; border: 4px solid var(--primary-red);">
+                        <span style="font-size: 2rem;">👤</span>
+                    </div>
+                {% endif %}
+            </div>
+            <h2 style="text-align: center; margin-bottom: 0.5rem;">{{ user.username }}</h2>
+            <p style="text-align: center; color: var(--gray-600); margin-bottom: 1.5rem;">{{ user.get_user_type_display }}</p>
+            
+            <div style="background: var(--light-red); padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <span>UAP ID:</span>
+                    <strong>{{ user.uap_id }}</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <span>Email:</span>
+                    <strong>{{ user.email }}</strong>
+                </div>
+                {% if profile.blood_group %}
+                <div style="display: flex; justify-content: space-between;">
+                    <span>Blood Group:</span>
+                    {% if profile.blood_group == "A+" %}
+                        <span class="blood-badge blood-a-plus">{{ profile.blood_group }}</span>
+                    {% elif profile.blood_group == "A-" %}
+                        <span class="blood-badge blood-a-minus">{{ profile.blood_group }}</span>
+                    {% elif profile.blood_group == "B+" %}
+                        <span class="blood-badge blood-b-plus">{{ profile.blood_group }}</span>
+                    {% elif profile.blood_group == "B-" %}
+                        <span class="blood-badge blood-b-minus">{{ profile.blood_group }}</span>
+                    {% elif profile.blood_group == "O+" %}
+                        <span class="blood-badge blood-o-plus">{{ profile.blood_group }}</span>
+                    {% elif profile.blood_group == "O-" %}
+                        <span class="blood-badge blood-o-minus">{{ profile.blood_group }}</span>
+                    {% elif profile.blood_group == "AB+" %}
+                        <span class="blood-badge blood-ab-plus">{{ profile.blood_group }}</span>
+                    {% elif profile.blood_group == "AB-" %}
+                        <span class="blood-badge blood-ab-minus">{{ profile.blood_group }}</span>
+                    {% else %}
+                        <span class="blood-badge">{{ profile.blood_group }}</span>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+
+            <a href="{% url 'edit_profile' %}" class="btn btn-outline" style="width: 100%;">
+                Edit Profile
+            </a>
+        </div>
+    </div>
+
+    <div class="lg:col-span-2">
+        <div class="card">
+            <h3 style="color: var(--primary-red); margin-bottom: 1.5rem;">Profile Information</h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4" style="margin-bottom: 2rem;">
+                <div>
+                    <h4 style="color: var(--gray-600); margin-bottom: 0.5rem;">Personal Details</h4>
+                    <p><strong>Full Name:</strong> {{ user.get_full_name|default:"Not provided" }}</p>
+                    <p><strong>Phone:</strong> {{ user.phone_number|default:"Not provided" }}</p>
+                    {% if profile.date_of_birth %}
+                    <p><strong>Date of Birth:</strong> {{ profile.date_of_birth }}</p>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <h4 style="color: var(--gray-600); margin-bottom: 0.5rem;">Donation Stats</h4>
+                    <p><strong>Total Donations:</strong> {{ profile.total_donations }}</p>
+                    <p><strong>Points Earned:</strong> {{ profile.points }}</p>
+                    <p><strong>Member Since:</strong> {{ user.date_joined|date:"M d, Y" }}</p>
+                </div>
+            </div>
+
+            {% if profile.bio %}
+            <div>
+                <h4 style="color: var(--gray-600); margin-bottom: 0.5rem;">About Me</h4>
+                <p>{{ profile.bio }}</p>
+            </div>
+            {% endif %}
+        </div>
+
+        {% if user.donor %}
+        <div class="card">
+            <h3 style="color: var(--primary-red); margin-bottom: 1.5rem;">Donor Information</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <p><strong>Blood Group:</strong>
+                        {% if user.donor.blood_group.blood_type == "A+" %}
+                            <span class="blood-badge blood-a-plus">{{ user.donor.blood_group.blood_type }}</span>
+                        {% elif user.donor.blood_group.blood_type == "A-" %}
+                            <span class="blood-badge blood-a-minus">{{ user.donor.blood_group.blood_type }}</span>
+                        {% elif user.donor.blood_group.blood_type == "B+" %}
+                            <span class="blood-badge blood-b-plus">{{ user.donor.blood_group.blood_type }}</span>
+                        {% elif user.donor.blood_group.blood_type == "B-" %}
+                            <span class="blood-badge blood-b-minus">{{ user.donor.blood_group.blood_type }}</span>
+                        {% elif user.donor.blood_group.blood_type == "O+" %}
+                            <span class="blood-badge blood-o-plus">{{ user.donor.blood_group.blood_type }}</span>
+                        {% elif user.donor.blood_group.blood_type == "O-" %}
+                            <span class="blood-badge blood-o-minus">{{ user.donor.blood_group.blood_type }}</span>
+                        {% elif user.donor.blood_group.blood_type == "AB+" %}
+                            <span class="blood-badge blood-ab-plus">{{ user.donor.blood_group.blood_type }}</span>
+                        {% elif user.donor.blood_group.blood_type == "AB-" %}
+                            <span class="blood-badge blood-ab-minus">{{ user.donor.blood_group.blood_type }}</span>
+                        {% else %}
+                            <span class="blood-badge">{{ user.donor.blood_group.blood_type }}</span>
+                        {% endif %}
+                    </p>
+                    <p><strong>Availability:</strong> 
+                        <span style="color: {% if user.donor.availability_status == 'available' %}green{% elif user.donor.availability_status == 'busy' %}orange{% else %}red{% endif %};">
+                            {{ user.donor.get_availability_status_display }}
+                        </span>
+                    </p>
+                </div>
+                <div>
+                    <p><strong>Location:</strong> {{ user.donor.get_location_display }}</p>
+                    <p><strong>Emergency Response:</strong> 
+                        {% if user.donor.emergency_response %}
+                            <span style="color: green;">✅ Available</span>
+                        {% else %}
+                            <span style="color: var(--gray-600);">❌ Not available</span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="card" style="text-align: center;">
+            <h3 style="color: var(--primary-red); margin-bottom: 1rem;">Become a Donor</h3>
+            <p style="margin-bottom: 1.5rem;">Join our community of life-savers and help those in need.</p>
+            <a href="{% url 'donor_register' %}" class="btn btn-primary">
+                Register as Donor
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

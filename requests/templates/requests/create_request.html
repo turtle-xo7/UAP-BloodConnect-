@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Blood Request - UAP-BloodConnect{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 0 auto;">
+    <div class="card">
+        <h2 style="text-align: center; margin-bottom: 2rem; color: var(--primary-red);">Create Blood Request</h2>
+        <p style="text-align: center; margin-bottom: 2rem; color: var(--gray-600);">Help us find the right donors by providing accurate information</p>
+        
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            {% for field in form %}
+            <div class="form-group">
+                <label class="form-label">{{ field.label }}</label>
+                {{ field }}
+                {% if field.help_text %}
+                <div style="font-size: 0.875rem; color: var(--gray-600); margin-top: 0.25rem;">
+                    {{ field.help_text }}
+                </div>
+                {% endif %}
+                {% if field.errors %}
+                <div style="color: var(--primary-red); font-size: 0.875rem; margin-top: 0.25rem;">
+                    {{ field.errors }}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+            
+            <div style="background: var(--light-red); padding: 1.5rem; border-radius: 0.5rem; margin: 2rem 0;">
+                <h4 style="color: var(--primary-red); margin-bottom: 1rem;">📋 Important Notes</h4>
+                <ul style="list-style-type: none;">
+                    <li style="padding: 0.25rem 0;">✅ Provide accurate patient information</li>
+                    <li style="padding: 0.25rem 0;">✅ Set realistic urgency level</li>
+                    <li style="padding: 0.25rem 0;">✅ Include clear location details</li>
+                    <li style="padding: 0.25rem 0;">✅ Upload supporting documents if available</li>
+                </ul>
+            </div>
+            
+            <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                <button type="submit" class="btn btn-primary" style="flex: 1;">
+                    Create Request
+                </button>
+                <a href="{% url 'request_list' %}" class="btn btn-outline" style="flex: 1; text-align: center;">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

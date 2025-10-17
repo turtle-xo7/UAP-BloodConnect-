@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block title %}Blood Requests - UAP-BloodConnect{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 2rem;">
+        <h1 style="color: var(--primary-red); margin: 0;">Blood Requests</h1>
+        <a href="{% url 'create_request' %}" class="btn btn-primary">
+            🩺 Create New Request
+        </a>
+    </div>
+
+    <div class="filter-section">
+        <h3 style="color: var(--gray-600); margin-bottom: 1rem;">Filter Requests</h3>
+        <form method="get" class="filter-grid">
+            <div class="form-group">
+                <label class="form-label">Blood Group</label>
+                <select name="blood_group" class="form-control">
+                    <option value="">All Blood Groups</option>
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Status</label>
+                <select name="status" class="form-control">
+                    <option value="">All Status</option>
+                    <option value="open">Open</option>
+                    <option value="in_progress">In Progress</option>
+                    <option value="fulfilled">Fulfilled</option>
+                    <option value="closed">Closed</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Urgency</label>
+                <select name="urgency" class="form-control">
+                    <option value="">All Urgency</option>
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                    <option value="critical">Critical</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Apply Filters</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="grid grid-cols-1 gap-4">
+        {% for request in requests %}
+        <div class="request-card {{ request.urgency }}">
+            <div style="display: flex; justify-content: between; align-items: start; margin-bottom: 1rem;">
+                <div style="flex: 1;">
+                    <h3 style="margin: 0 0 0.5rem 0; color: var(--gray-800);">
+                        {% if request.urgency == 'critical' %}🚨{% elif request.urgency == 'high' %}⚠️{% endif %}
+                        {{ request.patient_name }}
+                        {% if request.patient_age %}
+                            ({{ request.patient_age }} years)
+                        {% endif %}
+                    </h3>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
+                        {% if request.blood_group.blood_type == "A+" %}
+                            <span class="blood-badge blood-a-plus">{{ request.blood_group.blood_type }}</span>
+                        {% elif request.blood_group.blood_type == "A-" %}
+                            <span class="blood-badge blood-a-minus">{{ request.blood_group.blood_type }}</span>
+                        {% elif request.blood_group.blood_type == "B+" %}
+                            <span class="blood-badge blood-b-plus">{{ request.blood_group.blood_type }}</span>
+                        {% elif request.blood_group.blood_type == "B-" %}
+                            <span class="blood-badge blood-b-minus">{{ request.blood_group.blood_type }}</span>
+                        {% elif request.blood_group.blood_type == "O+" %}
+                            <span class="blood-badge blood-o-plus">{{ request.blood_group.blood_type }}</span>
+                        {% elif request.blood_group.blood_type == "O-" %}
+                            <span class="blood-badge blood-o-minus">{{ request.blood_group.blood_type }}</span>
+                        {% elif request.blood_group.blood_type == "AB+" %}
+                            <span class="blood-badge blood-ab-plus">{{ request.blood_group.blood_type }}</span>
+                        {% elif request.blood_group.blood_type == "AB-" %}
+                            <span class="blood-badge blood-ab-minus">{{ request.blood_group.blood_type }}</span>
+                        {% else %}
+                            <span class="blood-badge">{{ request.blood_group.blood_type }}</span>
+                        {% endif %}
+                        
+                        <span class="urgency-badge urgency-{{ request.urgency }}">
+                            {{ request.get_urgency_display }}
+                        </span>
+                        
+                        <span class="status-badge status-{{ request.status }}">
+                            {{ request.get_status_display }}
+                        </span>
+                    </div>
+                </div>
+                <div style="text-align: right;">
+                    <div style="color: var(--gray-600); font-size: 0.875rem;">
+                        📍 {{ request.get_location_display }}
+                    </div>
+                    <div style="color: var(--gray-600); font-size: 0.875rem;">
+                        Needed by: {{ request.needed_by_date|date:"M d, Y" }}
+                    </div>
+                </div>
+            </div>
+            
+            {% if request.description %}
+            <div style="margin-bottom: 1rem;">
+                <p style="margin: 0; color: var(--gray-600);">{{ request.description }}</p>
+            </div>
+            {% endif %}
+            
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="color: var(--gray-600); font-size: 0.875rem;">
+                    Requested by: {{ request.requester.username }}
+                    • {{ request.created_at|timesince }} ago
+                </div>
+                <a href="{% url 'request_detail' request.id %}" class="btn btn-outline" style="font-size: 0.875rem;">
+                    View Details
+                </a>
+            </div>
+        </div>
+        {% empty %}
+        <div class="card" style="text-align: center; padding: 3rem;">
+            <h3 style="color: var(--gray-600); margin-bottom: 1rem;">No blood requests found</h3>
+            <p style="color: var(--gray-600); margin-bottom: 2rem;">Be the first to create a blood request or try adjusting your filters.</p>
+            <a href="{% url 'create_request' %}" class="btn btn-primary">
+                Create First Request
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}  

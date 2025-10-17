@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}About - UAP-BloodConnect{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1 style="text-align: center; margin-bottom: 2rem; color: var(--primary-red);">About UAP-BloodConnect</h1>
+    
+    <div style="max-width: 800px; margin: 0 auto;">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6" style="margin-bottom: 3rem;">
+            <div class="card">
+                <h3 style="color: var(--primary-red); margin-bottom: 1rem;">🎯 Our Mission</h3>
+                <p>UAP-BloodConnect is dedicated to creating a reliable, efficient, and community-driven platform that bridges the gap between blood donors and recipients within the University of Asia Pacific community. We believe that no one should suffer due to blood shortages when there are willing donors nearby.</p>
+            </div>
+            <div class="card">
+                <h3 style="color: var(--secondary-blue); margin-bottom: 1rem;">🌟 Our Vision</h3>
+                <p>To eliminate preventable deaths due to blood shortages by leveraging technology and community participation, making blood donation accessible, efficient, and rewarding for everyone involved in the UAP community.</p>
+            </div>
+        </div>
+
+        <div class="card" style="margin-bottom: 3rem;">
+            <h3 style="color: var(--primary-red); margin-bottom: 1.5rem; text-align: center;">Why UAP-BloodConnect?</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <h4 style="color: var(--dark-red); margin-bottom: 0.5rem;">🚨 Emergency Response</h4>
+                    <p>Immediate connection during critical situations when every minute counts.</p>
+                </div>
+                <div>
+                    <h4 style="color: var(--dark-red); margin-bottom: 0.5rem;">🏫 Community Focus</h4>
+                    <p>Exclusive to UAP members, ensuring trust and reliability.</p>
+                </div>
+                <div>
+                    <h4 style="color: var(--dark-red); margin-bottom: 0.5rem;">📱 Easy to Use</h4>
+                    <p>Simple interface designed for quick access during emergencies.</p>
+                </div>
+                <div>
+                    <h4 style="color: var(--dark-red); margin-bottom: 0.5rem;">🛡️ Safety First</h4>
+                    <p>Verified users and secure communication channels.</p>
+                </div>
+            </div>
+        </div>
+
+        <div style="background: var(--light-red); padding: 2rem; border-radius: 1rem; margin-bottom: 2rem;">
+            <h3 style="color: var(--primary-red); margin-bottom: 1rem; text-align: center;">Safety Features</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                <ul style="list-style-type: none;">
+                    <li style="padding: 0.5rem 0;">✅ Verified UAP community members only</li>
+                    <li style="padding: 0.5rem 0;">✅ Secure communication platform</li>
+                    <li style="padding: 0.5rem 0;">✅ 90-day donation interval enforcement</li>
+                </ul>
+                <ul style="list-style-type: none;">
+                    <li style="padding: 0.5rem 0;">✅ Emergency response prioritization</li>
+                    <li style="padding: 0.5rem 0;">✅ Location-based matching</li>
+                    <li style="padding: 0.5rem 0;">✅ Privacy protection</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 style="color: var(--primary-red); margin-bottom: 1rem; text-align: center;">Join Our Life-Saving Mission</h3>
+            <p style="text-align: center; margin-bottom: 1.5rem;">Whether you're a student, faculty member, or staff, you can make a difference. Register today and become part of a community that saves lives.</p>
+            <div style="text-align: center;">
+                {% if user.is_authenticated %}
+                    <p>Thank you for being part of our life-saving community! 🎉</p>
+                {% else %}
+                    <a href="{% url 'register' %}" class="btn btn-primary">Join Now</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

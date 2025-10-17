@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Register - UAP-BloodConnect{% endblock %}
+
+{% block content %}
+<div style="max-width: 500px; margin: 0 auto;">
+    <div class="card">
+        <h2 style="text-align: center; margin-bottom: 2rem; color: var(--primary-red);">Join UAP-BloodConnect</h2>
+        <p style="text-align: center; margin-bottom: 2rem; color: var(--gray-600);">Create your account to start saving lives</p>
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            {% for field in form %}
+            <div class="form-group">
+                <label class="form-label">{{ field.label }}</label>
+                {{ field }}
+                {% if field.help_text %}
+                <div style="font-size: 0.875rem; color: var(--gray-600); margin-top: 0.25rem;">
+                    {{ field.help_text }}
+                </div>
+                {% endif %}
+                {% if field.errors %}
+                <div style="color: var(--primary-red); font-size: 0.875rem; margin-top: 0.25rem;">
+                    {{ field.errors }}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+            
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+                Create Account
+            </button>
+        </form>
+        
+        <div style="text-align: center; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--gray-200);">
+            <p>Already have an account? <a href="{% url 'login' %}" style="color: var(--primary-red); font-weight: 600;">Sign In</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Donation - UAP-BloodConnect{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 0 auto;">
+    <div class="card">
+        <h2 style="text-align: center; margin-bottom: 2rem; color: var(--primary-red);">Add Donation Record</h2>
+        <p style="text-align: center; margin-bottom: 2rem; color: var(--gray-600);">Record your blood donation to track your life-saving contributions</p>
+        
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            {% for field in form %}
+            <div class="form-group">
+                <label class="form-label">{{ field.label }}</label>
+                {{ field }}
+                {% if field.help_text %}
+                <div style="font-size: 0.875rem; color: var(--gray-600); margin-top: 0.25rem;">
+                    {{ field.help_text }}
+                </div>
+                {% endif %}
+                {% if field.errors %}
+                <div style="color: var(--primary-red); font-size: 0.875rem; margin-top: 0.25rem;">
+                    {{ field.errors }}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+            
+            <div style="background: var(--light-red); padding: 1.5rem; border-radius: 0.5rem; margin: 2rem 0;">
+                <h4 style="color: var(--primary-red); margin-bottom: 1rem;">💡 Donation Guidelines</h4>
+                <ul style="list-style-type: none;">
+                    <li style="padding: 0.25rem 0;">✅ Wait 90 days between donations</li>
+                    <li style="padding: 0.25rem 0;">✅ Typical donation: 1 unit (450ml)</li>
+                    <li style="padding: 0.25rem 0;">✅ Bring your donation certificate if available</li>
+                    <li style="padding: 0.25rem 0;">✅ Record accurate donation date</li>
+                </ul>
+            </div>
+            
+            <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                <button type="submit" class="btn btn-primary" style="flex: 1;">
+                    Add Donation Record
+                </button>
+                <a href="{% url 'donor_dashboard' %}" class="btn btn-outline" style="flex: 1; text-align: center;">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
