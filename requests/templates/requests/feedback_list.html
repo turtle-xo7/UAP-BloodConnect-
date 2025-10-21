@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+
+{% block title %}Feedback List - UAP-BloodConnect{% endblock %}
+
+
+{% block content %}
+<div class="card">
+   <h1 style="color: var(--primary-blue); margin-bottom: 2rem;">User Feedback</h1>
+
+   <div class="grid grid-cols-1 gap-4">
+       {% for feedback in feedbacks %}
+       <div class="card" style="background: {% if feedback.is_resolved %}var(--gray-50){% else %}var(--white){% endif %};">
+           <div style="display: flex; justify-content: between; align-items: start; margin-bottom: 1rem;">
+               <div style="flex: 1;">
+                   <h3 style="margin: 0 0 0.5rem 0; color: var(--gray-800);">
+                       {{ feedback.name }}
+                       <span style="color: var(--gray-600); font-size: 0.875rem;">({{ feedback.email }})</span>
+                   </h3>
+                   <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+                       <span style="color: {% if feedback.rating >= 4 %}var(--accent-emerald){% elif feedback.rating >= 3 %}var(--warning-amber){% else %}var(--emergency-red){% endif %}; font-weight: 600;">
+                           {{ feedback.get_rating_display }}
+                       </span>
+                       <span style="color: var(--gray-600); font-size: 0.875rem;">
+                           {{ feedback.created_at|date:"M d, Y H:i" }}
+                       </span>
+                       {% if feedback.is_resolved %}
+                       <span style="background: var(--accent-emerald); color: white; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem;">
+                           Resolved
+                       </span>
+                       {% else %}
+                       <span style="background: var(--warning-amber); color: white; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem;">
+                           Pending
+                       </span>
+                       {% endif %}
+                   </div>
+               </div>
+           </div>
+
+           <div style="background: var(--gray-50); padding: 1rem; border-radius: 0.5rem;">
+               <p style="margin: 0; color: var(--gray-700); line-height: 1.6;">{{ feedback.message }}</p>
+           </div>
+       </div>
+       {% empty %}
+       <div class="card" style="text-align: center; padding: 3rem;">
+           <h3 style="color: var(--gray-600); margin-bottom: 1rem;">No feedback yet</h3>
+           <p style="color: var(--gray-600);">No users have submitted feedback yet.</p>
+       </div>
+       {% endfor %}
+   </div>
+</div>
+{% endblock %}
