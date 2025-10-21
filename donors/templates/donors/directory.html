@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+
+{% block title %}Find Donors - UAP-BloodConnect{% endblock %}
+
+
+{% block content %}
+<div class="card">
+   <h1 style="color: var(--primary-red); margin-bottom: 2rem;">Find Blood Donors</h1>
+
+   <div class="filter-section">
+       <h3 style="color: var(--gray-600); margin-bottom: 1rem;">Filter Donors</h3>
+       <form method="get" class="filter-grid">
+           <div class="form-group">
+               <label class="form-label">Blood Group</label>
+               <select name="blood_group" class="form-control">
+                   <option value="">All Blood Groups</option>
+                   <option value="A+" {% if selected_blood_group == "A+" %}selected{% endif %}>A+</option>
+                   <option value="A-" {% if selected_blood_group == "A-" %}selected{% endif %}>A-</option>
+                   <option value="B+" {% if selected_blood_group == "B+" %}selected{% endif %}>B+</option>
+                   <option value="B-" {% if selected_blood_group == "B-" %}selected{% endif %}>B-</option>
+                   <option value="O+" {% if selected_blood_group == "O+" %}selected{% endif %}>O+</option>
+                   <option value="O-" {% if selected_blood_group == "O-" %}selected{% endif %}>O-</option>
+                   <option value="AB+" {% if selected_blood_group == "AB+" %}selected{% endif %}>AB+</option>
+                   <option value="AB-" {% if selected_blood_group == "AB-" %}selected{% endif %}>AB-</option>
+               </select>
+           </div>
+
+           <div class="form-group">
+               <label class="form-label">Location</label>
+               <select name="location" class="form-control">
+                   <option value="">All Locations</option>
+                   <option value="campus" {% if selected_location == "campus" %}selected{% endif %}>UAP Campus</option>
+                   <option value="uttara" {% if selected_location == "uttara" %}selected{% endif %}>Uttara</option>
+                   <option value="gulshan" {% if selected_location == "gulshan" %}selected{% endif %}>Gulshan</option>
+                   <option value="banani" {% if selected_location == "banani" %}selected{% endif %}>Banani</option>
+                   <option value="dhanmondi" {% if selected_location == "dhanmondi" %}selected{% endif %}>Dhanmondi</option>
+                   <option value="mirpur" {% if selected_location == "mirpur" %}selected{% endif %}>Mirpur</option>
+               </select>
+           </div>
+
+           <div class="form-group">
+               <button type="submit" class="btn btn-primary" style="width: 100%;">Apply Filters</button>
+           </div>
+       </form>
+   </div>
+
+
+   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+       {% for donor in donors %}
+       <div class="donor-card">
+           <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+               <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--gray-200); display: flex; align-items: center; justify-content: center; margin-right: 1rem;">
+                   <span style="font-size: 1.25rem;">👤</span>
+               </div>
+               <div>
+                   <h4 style="margin: 0; color: var(--primary-red);">{{ donor.user.username }}</h4>
+                   <p style="margin: 0; color: var(--gray-600); font-size: 0.875rem;">{{ donor.user.get_user_type_display }}</p>
+               </div>
+           </div>
+
+           <div style="margin-bottom: 1rem;">
+               {% if donor.blood_group.blood_type == "A+" %}
+                   <span class="blood-badge blood-a-plus">{{ donor.blood_group.blood_type }}</span>
+               {% elif donor.blood_group.blood_type == "A-" %}
+                   <span class="blood-badge blood-a-minus">{{ donor.blood_group.blood_type }}</span>
+               {% elif donor.blood_group.blood_type == "B+" %}
+                   <span class="blood-badge blood-b-plus">{{ donor.blood_group.blood_type }}</span>
+               {% elif donor.blood_group.blood_type == "B-" %}
+                   <span class="blood-badge blood-b-minus">{{ donor.blood_group.blood_type }}</span>
+               {% elif donor.blood_group.blood_type == "O+" %}
+                   <span class="blood-badge blood-o-plus">{{ donor.blood_group.blood_type }}</span>
+               {% elif donor.blood_group.blood_type == "O-" %}
+                   <span class="blood-badge blood-o-minus">{{ donor.blood_group.blood_type }}</span>
+               {% elif donor.blood_group.blood_type == "AB+" %}
+                   <span class="blood-badge blood-ab-plus">{{ donor.blood_group.blood_type }}</span>
+               {% elif donor.blood_group.blood_type == "AB-" %}
+                   <span class="blood-badge blood-ab-minus">{{ donor.blood_group.blood_type }}</span>
+               {% else %}
+                   <span class="blood-badge">{{ donor.blood_group.blood_type }}</span>
+               {% endif %}
+           </div>
+
+           <div style="color: var(--gray-600); font-size: 0.875rem; margin-bottom: 0.5rem;">
+               📍 {{ donor.get_location_display }}
+           </div>
+
+           <div style="color: var(--gray-600); font-size: 0.875rem; margin-bottom: 1rem;">
+               🩸 {{ donor.total_donations }} donations
+           </div>
+
+           <div style="display: flex; justify-content: space-between; align-items: center;">
+               <span style="color: {% if donor.availability_status == 'available' %}green{% elif donor.availability_status == 'busy' %}orange{% else %}red{% endif %}; font-size: 0.875rem;">
+                   {% if donor.availability_status == 'available' %}✅ Available{% elif donor.availability_status == 'busy' %}🟡 Busy{% else %}🔴 Unavailable{% endif %}
+               </span>
+               {% if donor.emergency_response %}
+               <span style="color: var(--primary-red); font-size: 0.75rem;">🚨 Emergency</span>
+               {% endif %}
+           </div>
+       </div>
+       {% empty %}
+       <div class="card" style="grid-column: 1 / -1; text-align: center;">
+           <h3 style="color: var(--gray-600);">No donors found</h3>
+           <p>Try adjusting your filters to find more donors.</p>
+       </div>
+       {% endfor %}
+   </div>
+</div>
+{% endblock %}
